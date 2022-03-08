@@ -3,6 +3,8 @@ package com.oysp.oysp.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @ToString
 @Getter
@@ -14,12 +16,16 @@ import javax.persistence.*;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long userId;
 
     @Column(length = 200, nullable = false)
     private String userName;
 
-    @Column(length = 200, nullable = true)
+    @Column(length = 200, nullable = false)
     private String userCollege;
+
+    @OneToMany
+    @JoinColumn(name = "user_userid")
+    public List<Subject> subjects = new ArrayList<>();
 }

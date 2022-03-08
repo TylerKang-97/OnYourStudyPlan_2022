@@ -21,6 +21,7 @@ public class Subject {
     @Column(length = 200, nullable = false)
     private String subjectName;
 
-    @Column(length = 100, nullable = true)
+    @Column(length = 100, nullable = false)
     private Integer credit;
+
 }
