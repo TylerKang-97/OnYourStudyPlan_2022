@@ -24,4 +24,17 @@ public class Subject {
     @Column(length = 100, nullable = false)
     private Integer credit;
 
+//    @ManyToOne
+//    @JoinColumn(name = "USER_USERID")
+//    private User user;
+//
+//    public void setUser(User user) {
+//        if (this.user != null) {
+//            this.user.getSubjects().remove(this);
+//        }
+//        this.user = user;
+//        user.getSubjects().add(this);
+//    }
+
+
 }

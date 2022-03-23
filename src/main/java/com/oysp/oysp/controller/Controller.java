@@ -5,6 +5,7 @@ import com.oysp.oysp.entity.Subject;
 import com.oysp.oysp.entity.User;
 import com.oysp.oysp.repository.SubjectRepository;
 import com.oysp.oysp.repository.UserRepository;
+import com.oysp.oysp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,8 @@ public class Controller {
 
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
+
+    private final UserService userService;
 
 
     @GetMapping("/api")
@@ -39,23 +42,40 @@ public class Controller {
 
     @PostMapping(value = "/api/post/test")
     public User info(@RequestBody InfoVO infoVO) {
+
         System.out.println("Post Test" + infoVO);
 
         Subject subject = new Subject();
         subject.setSubjectName(infoVO.getSubjectName());
         subject.setCredit(infoVO.getCredit());
-
         subjectRepository.save(subject);
 
         //System.out.println("===post_Sub===" + subject);
 
         User user = new User();
-        user.setUserName(infoVO.getUserName());
-        user.setUserCollege(infoVO.getUserCollege());
+//        user.setUserName(infoVO.getUserName());
+//        user.setUserCollege(infoVO.getUserCollege());
+
         user.getSubjects().add(subject);
 
         return userRepository.save(user);
     }
+
+    @PostMapping(value = "api/post/serviceTest")
+    public String setting(@RequestBody InfoVO infoVO) {
+        User user = userRepository.findById(19L).get();
+        Subject subject = new Subject();
+        subject.setSubjectName(infoVO.getSubjectName());
+        subject.setCredit(infoVO.getCredit());
+        System.out.print("infoVO" + infoVO.getSubjectName());
+
+        subjectRepository.save(subject);
+
+        user.addSubject(subject);
+        userRepository.save(user);
+        return "api/user";
+    }
+
 
 //    @PostMapping(value = "/api/post/test")
 //    public InfoVO info(@RequestBody InfoVO infoVO) {
