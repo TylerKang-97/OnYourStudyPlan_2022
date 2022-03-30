@@ -23,6 +23,12 @@ public class User {
     private Long userId;
 
     @Column(length = 200, nullable = false)
+    private String userEmail;
+
+    @Column(length = 200,nullable = false)
+    private String password;
+
+    @Column(length = 200, nullable = false)
     private String userName;
 
     @Column(length = 200, nullable = false)

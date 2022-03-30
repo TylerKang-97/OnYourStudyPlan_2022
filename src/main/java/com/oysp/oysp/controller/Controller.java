@@ -1,12 +1,17 @@
 package com.oysp.oysp.controller;
 
+import com.oysp.oysp.dto.LoginDTO;
+import com.oysp.oysp.dto.UserDTO;
 import com.oysp.oysp.entity.InfoVO;
 import com.oysp.oysp.entity.Subject;
 import com.oysp.oysp.entity.User;
+import com.oysp.oysp.entity.UserVO;
 import com.oysp.oysp.repository.SubjectRepository;
 import com.oysp.oysp.repository.UserRepository;
 import com.oysp.oysp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +26,11 @@ public class Controller {
 
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
-
     private final UserService userService;
+
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/api")
@@ -63,7 +71,7 @@ public class Controller {
 
     @PostMapping(value = "api/post/serviceTest")
     public String setting(@RequestBody InfoVO infoVO) {
-        User user = userRepository.findById(19L).get();
+        User user = userRepository.findById(48L).get();
         Subject subject = new Subject();
         subject.setSubjectName(infoVO.getSubjectName());
         subject.setCredit(infoVO.getCredit());
@@ -76,13 +84,22 @@ public class Controller {
         return "api/user";
     }
 
+    @PostMapping(value = "api/post/signup")
+    public String signUp(@RequestBody UserDTO userDTO) {
+        userService.createUser(userDTO);
+        return "api/user";
+    }
 
-//    @PostMapping(value = "/api/post/test")
-//    public InfoVO info(@RequestBody InfoVO infoVO) {
-//        System.out.println("===Post InfoVO===" + infoVO.getSubjectName());
-//        System.out.println("===Post InfoVO===" + infoVO.getUserName());
-//        System.out.println("===Post InfoVO===" + infoVO.getUserCollege());
-//        System.out.println("===Post InfoVO===" + infoVO.getCredit());
-//        return infoVO;
-//    }
+    @PostMapping(value = "api/post/login")
+    public String login(@RequestBody LoginDTO loginDTO) {
+        userService.checkPassword(loginDTO.getUserEmail(), loginDTO.getPassword());
+        if(userService.checkPassword(loginDTO.getUserEmail(), loginDTO.getPassword()) == true) {
+            return "login success!";
+        } else {
+            return "login false..";
+        }
+
+    }
 }
+
+
